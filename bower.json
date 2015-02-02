@@ -1,0 +1,7 @@
+{
+  "name": "aidi.js",
+  "version": "0.1.0",
+  "devDependencies": {
+    "jasmine": "2.1.x"
+  }
+}

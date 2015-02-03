@@ -2,18 +2,18 @@ var Aidi = function() {
 	'use strict';
 
 	var providers = {},
-		services = {},
+		components = {},
 
 		functionParamsRegex = /^[^\(]+\(([^\)]*)\)\s+{/;
 
 	var resolveDependencies = function(dependencies, componentName) {
 		return (dependencies || []).map(function(dep) {
-			var service = getServiceInstance(dep);
-			if (!service) {
+			var dependency = getComponentInstance(dep);
+			if (!dependency) {
 				throw new Error("Cannot resolve dependency: " + dep + 
 					(componentName ? ", for component: " + componentName : ""));
 			}
-			return service;
+			return dependency;
 		});
 	};
 
@@ -36,7 +36,7 @@ var Aidi = function() {
 		return dependencies || [];
 	}
 
-	var registerServiceProvider = function(name, provider, _dependencies) {
+	var registerComponentProvider = function(name, provider, _dependencies) {
 		var dependencies = identifyDependencies(provider, _dependencies, name);
 
 		if (providers[name] === undefined) {
@@ -49,7 +49,7 @@ var Aidi = function() {
 		}
 	};
 
-	var createServiceInstance = function(name) {
+	var createComponentInstance = function(name) {
 		var provider = providers[name];
 		if (provider) {
 			var resolvedDeps = resolveDependencies(provider.__inject__, name);
@@ -59,11 +59,11 @@ var Aidi = function() {
 		}
 	};
 
-	var getServiceInstance = function(name) {
-		if (services[name] === undefined) {
-			services[name] = createServiceInstance(name);
+	var getComponentInstance = function(name) {
+		if (components[name] === undefined) {
+			components[name] = createComponentInstance(name);
 		}
-		return services[name];
+		return components[name];
 	};
 
 	var applyDependencies = function(component, dependencies, resolvedDeps) {
@@ -79,22 +79,25 @@ var Aidi = function() {
 
 	return {
 		providers: providers,
-		services: services,
+		components: components,
 
-		service: function(name, provider, dependencies) {
+		component: function(name, provider, dependencies) {
 			if (arguments.length === 1) {				
-				return getServiceInstance(name);
+				return getComponentInstance(name);
 			} else {
-				registerServiceProvider(name, provider, dependencies);
+				registerComponentProvider(name, provider, dependencies);
 				return this;
 			}						
+		},
+		service: function() {
+			return this.component.apply(this, arguments);
 		},
 		inject: function(component, _dependencies) {
 			var dependencies = identifyDependencies(component, _dependencies),
 				resolvedDeps = resolveDependencies(dependencies);
 
 			return applyDependencies(component, dependencies, resolvedDeps);
-		}
+		}		
 	};
 };
 

@@ -1,5 +1,6 @@
 {
   "name": "aidi.js",
+  "description": "Angular inspired dependency injection library for JavaScript",
   "version": "0.1.0",
   "devDependencies": {
     "jasmine": "2.1.x"

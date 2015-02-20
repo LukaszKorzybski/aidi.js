@@ -6,7 +6,7 @@ describe('aidi', function() {
 		service1Provider;
 
 	beforeEach(function() {
-		sut = Aidi();
+		sut = new Aidi();
 		serviceProvider = function() { return { msg: 'test service' }; };
 		service1Provider = function(testService) { return { msg: testService.msg + ' 1' }; };
 
@@ -16,7 +16,7 @@ describe('aidi', function() {
 	describe('component', function() {
 
 		it('should register given service provider under given name', function() {			
-			expect(sut.providers['testService']).toBe(serviceProvider);
+			expect(sut.providers.testService).toBe(serviceProvider);
 		});
 
 		it('should throw exception if service provider with given name has already been registered', function() {			
@@ -60,7 +60,7 @@ describe('aidi', function() {
 
 		it("should use provider's __inject__ property to identify dependencies when no inline dependencies were passed", function() {
 			var testProvider = function(testService) { 
-				return testService.msg 
+				return testService.msg; 
 			};
 			testProvider.__inject__ = ['testService'];
 			
@@ -110,7 +110,7 @@ describe('aidi', function() {
 
 		it("should use component's __inject__ property to identify dependencies when no inline dependencies were passed", function() {
 			var func = function(testService) { 
-				return testService.msg 
+				return testService.msg;
 			};
 			func.__inject__ = ['testService'];
 			
@@ -138,7 +138,7 @@ describe('aidi', function() {
 		it('should support injecting into objects dependencies defined with __inject__ property', function() {
 			var obj1 = { __inject__: ['testService'] };
 			sut.inject(obj1);
-			expect(obj1.testService).toBeDefined;
+			expect(obj1.testService).toBeDefined();
 			expect(obj1.testService.msg).toEqual('test service');
 		});
 	});

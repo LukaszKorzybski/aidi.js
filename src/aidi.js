@@ -34,7 +34,7 @@ var Aidi = function() {
 		}
 
 		return dependencies || [];
-	}
+	};
 
 	var registerComponentProvider = function(name, provider, _dependencies) {
 		var dependencies = identifyDependencies(provider, _dependencies, name);
@@ -77,28 +77,31 @@ var Aidi = function() {
 		}
 	};
 
-	return {
-		providers: providers,
-		components: components,
 
-		component: function(name, provider, dependencies) {
-			if (arguments.length === 1) {				
-				return getComponentInstance(name);
-			} else {
-				registerComponentProvider(name, provider, dependencies);
-				return this;
-			}						
-		},
-		service: function() {
-			return this.component.apply(this, arguments);
-		},
-		inject: function(component, _dependencies) {
-			var dependencies = identifyDependencies(component, _dependencies),
-				resolvedDeps = resolveDependencies(dependencies);
-
-			return applyDependencies(component, dependencies, resolvedDeps);
-		}		
+	this.providers = providers;
+	this.components = components;
+	
+	this.component = function(name, provider, dependencies) {
+		if (arguments.length === 1) {				
+			return getComponentInstance(name);
+		} else {
+			registerComponentProvider(name, provider, dependencies);
+			return this;
+		}						
 	};
+
+	this.service = function() {
+		return this.component.apply(this, arguments);
+	};
+
+	this.inject = function(component, _dependencies) {
+		var dependencies = identifyDependencies(component, _dependencies),
+			resolvedDeps = resolveDependencies(dependencies);
+
+		return applyDependencies(component, dependencies, resolvedDeps);
+	};
+
+	return this;
 };
 
-var aidi = Aidi();
+var aidi = new Aidi();

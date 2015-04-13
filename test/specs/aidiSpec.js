@@ -6,12 +6,12 @@ describe('aidi', function() {
 		service1Provider;
 
 	beforeEach(function() {
-		sut = new Aidi();
+		sut = new aidi.constructor();
 		serviceProvider = function() { return { msg: 'test service' }; };
 		service1Provider = function(testService) { return { msg: testService.msg + ' 1' }; };
 
 		sut.component('testService', serviceProvider);
-	});
+	});	
 
 	describe('component', function() {
 

@@ -11,8 +11,8 @@ module.exports = function(grunt) {
 			},
 			unit: {
 				options: {
-					autoWatch: true,
-					singleRun: false
+					autoWatch: false,
+					background: true
 				}
 			},
 			unit_dist: {
@@ -31,16 +31,23 @@ module.exports = function(grunt) {
 					'dist/aidi.min.js': ['src/aidi.js']
 				}
 			}	
+		},
+		watch: {
+			karma: {
+				files: ['src/*.js', 'test/specs/*.js'],
+				tasks: ['karma:unit:run']
+			}
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-jshint');	
-	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-karma');
+	grunt.loadNpmTasks('grunt-contrib-uglify');	
 
 	grunt.registerTask('analyze', ['jshint']);
 	grunt.registerTask('test', ['karma:unit_dist']);
-	grunt.registerTask('test-dev', ['karma:unit']);	
+	grunt.registerTask('test-dev', ['karma:unit', 'watch']);
 	grunt.registerTask('dist', ['analyze', 'test', 'uglify:aidi']);
 };
 

@@ -78,6 +78,9 @@ Into function
     var abWriter = aidi.inject(abWriterProvider);
     abWriter();
 
+*As with component() you can explicitly provide dependencies by setting \_\_inject\_\_ 
+property on the provider function or by passing them to the inject() function*
+
 Into object
 
     var writer = {        
@@ -88,3 +91,26 @@ Into object
 
     aidi.inject(writer);
     writer.writeAB();
+
+*As with component() you can skip the \_\_inject\_\_ property and instead pass the 
+dependencies to the inject() function*
+
+## Develop
+
+Run JSHint syntax checker
+
+    grunt analyze
+
+Run unit tests
+
+    grunt test
+
+Run unit tests in continuous mode
+
+    grunt test-dev
+
+Build
+
+    grunt build
+
+*The resulting minified file will be written to `dist/aidi.min.js`*

@@ -1,102 +1,102 @@
 'use strict';
 
 module.exports = function Aidi() {
-    let providers = {},
-        components = {},
 
-        functionParamsRegex = /^[^\(]*\(([^\)]*)\)\s*(=>)?\s*{/;
+  const functionParamsRegex = /^[^\(]*\(([^\)]*)\)\s*(=>)?\s*{/;
 
-    let resolveDependencies = function(dependencies, componentName) {
-        return (dependencies || []).map((dep) => {
-            let dependency = getComponentInstance(dep);
-            if (!dependency) {
-                throw new Error(`Cannot resolve dependency: ${dep} for component: ${componentName} `);
-            }
-            return dependency;
-        });
-    };
+  let providers = {};
+  let components = {};
 
-    let identifyDependencies = function(component, _dependencies, componentName) {
-        let dependencies = _dependencies || component.__inject__;
+  this.providers = providers;
+  this.components = components;
 
-        if (typeof component === 'function' && !dependencies) {
-            let paramsMatch = component.toString().match(functionParamsRegex);
+  this.component = function(name, provider, dependencies) {
+      if (arguments.length === 1) {
+          return getComponentInstance(name);
+      } else {
+          registerComponentProvider(name, provider, dependencies);
+          return this;
+      }
+  };
 
-            if (paramsMatch && paramsMatch.length > 1) {
-                dependencies = paramsMatch[1].split(',')
-                    .map((p) => { return p.trim(); })
-                    .filter((p) => { return p !== ""; });
-            } else {
-                throw new Error("Error when identifying dependencies. Parsing " +
-                  `function's parameters list failed. component: ${componentName}`);
-            }
-        }
+  this.service = function() {
+      return this.component.apply(this, arguments);
+  };
 
-        return dependencies || [];
-    };
+  this.inject = function(component, _dependencies) {
+      let dependencies = identifyDependencies(component, _dependencies),
+          resolvedDeps = resolveDependencies(dependencies);
 
-    let registerComponentProvider = function(name, provider, _dependencies) {
-        let dependencies = identifyDependencies(provider, _dependencies, name);
+      return applyDependencies(component, dependencies, resolvedDeps);
+  };
 
-        if (providers[name] === undefined) {
-            provider.__name__ = name;
-            provider.__inject__ = dependencies || [];
+  let resolveDependencies = function(dependencies, componentName) {
+      return (dependencies || []).map((dep) => {
+          let dependency = getComponentInstance(dep);
+          if (!dependency) {
+              throw new Error(`Cannot resolve dependency: ${dep} for component: ${componentName} `);
+          }
+          return dependency;
+      });
+  };
 
-            providers[name] = provider;
-        } else {
-            throw new Error(`Provider ${name} is already registered`);
-        }
-    };
+  let identifyDependencies = function(component, _dependencies, componentName) {
+      let dependencies = _dependencies || component.__inject__;
 
-    let createComponentInstance = function(name) {
-        let provider = providers[name];
-        if (provider) {
-            let resolvedDeps = resolveDependencies(provider.__inject__, name);
-            return provider.apply(undefined, resolvedDeps);
-        } else {
-            throw new Error(`Provider ${name} not found`);
-        }
-    };
+      if (typeof component === 'function' && !dependencies) {
+          let paramsMatch = component.toString().match(functionParamsRegex);
 
-    let getComponentInstance = function(name) {
-        if (components[name] === undefined) {
-            components[name] = createComponentInstance(name);
-        }
-        return components[name];
-    };
+          if (paramsMatch && paramsMatch.length > 1) {
+              dependencies = paramsMatch[1].split(',')
+                  .map((p) => { return p.trim(); })
+                  .filter((p) => { return p !== ""; });
+          } else {
+              throw new Error("Error when identifying dependencies. Parsing " +
+                `function's parameters list failed. component: ${componentName}`);
+          }
+      }
 
-    let applyDependencies = function(component, dependencies, resolvedDeps) {
-        if (typeof component === 'function') {
-            return component.apply(undefined, resolvedDeps);
-        } else {
-            resolvedDeps.forEach((dep, i) => {
-                component[dependencies[i]] = dep;
-            });
-            return component;
-        }
-    };
+      return dependencies || [];
+  };
 
+  let registerComponentProvider = function(name, provider, _dependencies) {
+      let dependencies = identifyDependencies(provider, _dependencies, name);
 
-    this.providers = providers;
-    this.components = components;
+      if (providers[name] === undefined) {
+          provider.__name__ = name;
+          provider.__inject__ = dependencies || [];
 
-    this.component = function(name, provider, dependencies) {
-        if (arguments.length === 1) {
-            return getComponentInstance(name);
-        } else {
-            registerComponentProvider(name, provider, dependencies);
-            return this;
-        }
-    };
+          providers[name] = provider;
+      } else {
+          throw new Error(`Provider ${name} is already registered`);
+      }
+  };
 
-    this.service = function() {
-        return this.component.apply(this, arguments);
-    };
+  let createComponentInstance = function(name) {
+      let provider = providers[name];
+      if (provider) {
+          let resolvedDeps = resolveDependencies(provider.__inject__, name);
+          return provider.apply(undefined, resolvedDeps);
+      } else {
+          throw new Error(`Provider ${name} not found`);
+      }
+  };
 
-    this.inject = function(component, _dependencies) {
-        let dependencies = identifyDependencies(component, _dependencies),
-            resolvedDeps = resolveDependencies(dependencies);
+  let getComponentInstance = function(name) {
+      if (components[name] === undefined) {
+          components[name] = createComponentInstance(name);
+      }
+      return components[name];
+  };
 
-        return applyDependencies(component, dependencies, resolvedDeps);
-    };
+  let applyDependencies = function(component, dependencies, resolvedDeps) {
+      if (typeof component === 'function') {
+          return component.apply(undefined, resolvedDeps);
+      } else {
+          resolvedDeps.forEach((dep, i) => {
+              component[dependencies[i]] = dep;
+          });
+          return component;
+      }
+  };
 };

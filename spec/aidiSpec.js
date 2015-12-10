@@ -83,6 +83,17 @@ describe('aidi', function() {
             expect(testService2).toEqual('test service,test service 1');
         });
 
+        it("should be able to correctly identify dependencies of arrow functions", function() {
+            var testProvider = (testService) => {
+                return testService.msg;
+            };
+
+            sut.component('testService1', testProvider);
+
+            var testService2 = sut.component('testService1');
+            expect(testService2).toEqual('test service');
+        });
+
         it("should not fail if provider function doesn't have any parameters", function() {
             var testService = sut.component('testService');
             expect(testService.msg).toEqual('test service');
@@ -118,6 +129,16 @@ describe('aidi', function() {
 
             var result = sut.inject(func);
             expect(result).toEqual('test service');
+        });
+
+        it("should be able to correctly identify dependencies of arrow functions", function() {
+          var func = (testService) => {
+              return testService.msg;
+          };
+          func.__inject__ = ['testService'];
+
+          var result = sut.inject(func);
+          expect(result).toEqual('test service');
         });
 
         it("should use component parameters' names to identify dependencies when no explicit dependencies information is given", function() {

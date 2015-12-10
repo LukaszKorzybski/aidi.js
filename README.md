@@ -2,19 +2,10 @@
 Angular Inspired Dependency Injection library
 
 ## Import
-AMD loader
-
-    define('myapp', ['aidi'], function() {
-        ...
-    });
 
 Node.js
 
-    var aidi = require('aidi');
-
-Plain HTML5
-
-    <script src="aidi.js"></script>
+    var aidi = require('aidi')();
 
 ## Use    
 ### Register
@@ -78,7 +69,7 @@ Into function
     var abWriter = aidi.inject(abWriterProvider);
     abWriter();
 
-*As with component() you can explicitly provide dependencies by setting \_\_inject\_\_ 
+*As with component() you can explicitly provide dependencies by setting \_\_inject\_\_
 property on the provider function or by passing them to the inject() function*
 
 Into object
@@ -92,7 +83,7 @@ Into object
     aidi.inject(writer);
     writer.writeAB();
 
-*As with component() you can skip the \_\_inject\_\_ property and instead pass the 
+*As with component() you can skip the \_\_inject\_\_ property and instead pass the
 dependencies to the inject() function*
 
 ## Develop

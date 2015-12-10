@@ -3,6 +3,13 @@ Angular Inspired Dependency Injection library
 
 ## Import
 
+Aidi.js uses CommonJS module definition. Depending on your environment you will
+use different methods to load it.
+
+Browsers:
+
+Use WebPack or JSPM to load Aidi.js
+
 Node.js
 
     var aidi = require('aidi')();

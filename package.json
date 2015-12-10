@@ -8,6 +8,7 @@
         "grunt-contrib-watch": "^0.6.1",
         "grunt-karma": "^0.10.1",
         "grunt-notify": "^0.4.1",
+        "jasmine": "^2.4.1",
         "jasmine-core": "^2.2.0",
         "karma": "^0.12.31",
         "karma-chrome-launcher": "^0.1.7",

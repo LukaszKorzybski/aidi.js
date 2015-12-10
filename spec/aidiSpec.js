@@ -12,7 +12,7 @@ describe('aidi', function() {
         serviceProvider = function() { return { msg: 'test service' }; };
         service1Provider = function(testService) { return { msg: testService.msg + ' 1' }; };
 
-        sut.component('testService', serviceProvider);
+        sut.component('testService' , serviceProvider);
     });
 
     describe('component', function() {

@@ -10,15 +10,14 @@ module.exports = function Aidi() {
         return (dependencies || []).map((dep) => {
             let dependency = getComponentInstance(dep);
             if (!dependency) {
-                throw new Error("Cannot resolve dependency: " + dep +
-                    (componentName ? ", for component: " + componentName : ""));
+                throw new Error(`Cannot resolve dependency: ${dep} for component: ${componentName} `);
             }
             return dependency;
         });
     };
 
     let identifyDependencies = function(component, _dependencies, componentName) {
-        let dependencies = _dependencies ? _dependencies : component.__inject__;
+        let dependencies = _dependencies || component.__inject__;
 
         if (typeof component === 'function' && !dependencies) {
             let paramsMatch = component.toString().match(functionParamsRegex);
@@ -28,8 +27,8 @@ module.exports = function Aidi() {
                     .map((p) => { return p.trim(); })
                     .filter((p) => { return p !== ""; });
             } else {
-                throw new Error("Error when identifying dependencies. Parsing function's parameters list failed." +
-                    (componentName ? " component: " + componentName : ""));
+                throw new Error("Error when identifying dependencies. Parsing " +
+                  `function's parameters list failed. component: ${componentName}`);
             }
         }
 
@@ -45,7 +44,7 @@ module.exports = function Aidi() {
 
             providers[name] = provider;
         } else {
-            throw new Error("Provider " + name + " is already registered");
+            throw new Error(`Provider ${name} is already registered`);
         }
     };
 
@@ -55,7 +54,7 @@ module.exports = function Aidi() {
             let resolvedDeps = resolveDependencies(provider.__inject__, name);
             return provider.apply(undefined, resolvedDeps);
         } else {
-            throw new Error('Provider ' + name + ' not found');
+            throw new Error(`Provider ${name} not found`);
         }
     };
 

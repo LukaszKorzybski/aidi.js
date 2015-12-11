@@ -1,6 +1,6 @@
 'use strict';
 
-let Aidi = require('../src/aidi');
+import Aidi from '../src/aidi';
 
 describe('aidi', function() {
   'use strict';

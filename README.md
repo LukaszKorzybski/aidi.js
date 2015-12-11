@@ -11,7 +11,7 @@ use different methods to load it.
 
 Browsers:
 
-Use WebPack or JSPM to load Aidi.js
+Use WebPack, JSPM, SystemJS or equivalent to load Aidi.js
 
 Node.js
 

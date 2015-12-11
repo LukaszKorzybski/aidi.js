@@ -6,7 +6,7 @@ in the build step.
 
 ## Import
 
-Aidi.js uses CommonJS module definition. Depending on your environment and toolkit
+Compiled version of Aidi.js uses CommonJS module definition. Depending on your environment and toolkit
 you will use different methods to load it.
 
 In browser environment use WebPack, JSPM, SystemJS or any other bundler or module
@@ -14,12 +14,13 @@ loader that is compatible with CommonJS.
 
 ES6 modules:
 
-  import Aidi from 'aidi';
+    import Aidi from 'aidi';
 
-  let aidi = new Aidi();
+    let aidi = new Aidi();
 
 CommonJS:
-  var aidi = require('aidi').Aidi();
+
+    var aidi = require('aidi').Aidi();
 
 ## Use    
 ### Register
@@ -116,6 +117,6 @@ Build
 
 Package
 
-  gulp package
+    gulp package
 
 *The resulting file will be written to `dist/aidi.js`*

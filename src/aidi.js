@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function Aidi() {
+export default function Aidi() {
 
   const functionParamsRegex = /^[^\(]*\(([^\)]*)\)\s*(=>)?\s*{/;
 
@@ -100,3 +100,5 @@ module.exports = function Aidi() {
       }
   };
 };
+
+export { Aidi };

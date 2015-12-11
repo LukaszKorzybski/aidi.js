@@ -6,16 +6,20 @@ in the build step.
 
 ## Import
 
-Aidi.js uses CommonJS module definition. Depending on your environment you will
-use different methods to load it.
+Aidi.js uses CommonJS module definition. Depending on your environment and toolkit
+you will use different methods to load it.
 
-Browsers:
+In browser environment use WebPack, JSPM, SystemJS or any other bundler or module
+loader that is compatible with CommonJS.
 
-Use WebPack, JSPM, SystemJS or equivalent to load Aidi.js
+ES6 modules:
 
-Node.js
+  import Aidi from 'aidi';
 
-    var aidi = require('aidi')();
+  let aidi = new Aidi();
+
+CommonJS:
+  var aidi = require('aidi').Aidi();
 
 ## Use    
 ### Register

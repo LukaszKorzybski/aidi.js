@@ -1,6 +1,10 @@
 'use strict';
 
-module.exports = function Aidi() {
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = Aidi;
+function Aidi() {
 
     var functionParamsRegex = /^[^\(]*\(([^\)]*)\)\s*(=>)?\s*{/;
 
@@ -101,3 +105,5 @@ module.exports = function Aidi() {
         }
     };
 };
+
+exports.Aidi = Aidi;

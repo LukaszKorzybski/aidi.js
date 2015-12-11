@@ -1,6 +1,9 @@
 # aidi.js
 Angular Inspired Dependency Injection library
 
+Requires ES5 runtime. The source is written in ES6 but it is transpiled to ES5
+in the build step.
+
 ## Import
 
 Aidi.js uses CommonJS module definition. Depending on your environment you will
@@ -95,20 +98,20 @@ dependencies to the inject() function*
 
 ## Develop
 
-Run JSHint syntax checker
-
-    grunt analyze
-
 Run unit tests
 
-    grunt test
+    gulp test
 
-Run unit tests in continuous mode
+Run unit tests with watch
 
-    grunt test-dev
+    gulp test-dev
 
 Build
 
-    grunt build
+    gulp build
 
-*The resulting minified file will be written to `dist/aidi.min.js`*
+Package
+
+  gulp package
+
+*The resulting file will be written to `dist/aidi.js`*

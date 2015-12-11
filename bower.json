@@ -1,10 +1,10 @@
 {
     "name": "aidi.js",
     "version": "0.1.0",
-    "main": "dist/aidi.min.js",
+    "main": "src/aidi.js",
     "ignore": ["test"],
     "keywords": ["dependency", "injection", "angular"],
-    "description": "Angular inspired dependency injection library",    
+    "description": "Angular inspired dependency injection library",
     "devDependencies": {
         "jasmine": "2.1.x"
     }
